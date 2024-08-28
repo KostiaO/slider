@@ -36,7 +36,7 @@ button::-moz-focus-inner {
 
 .slider {
   position: relative;
-  width: 100wv;
+  width: 100vw;
   max-width: 800px;
   height: 100vh;
   margin: auto;
@@ -58,11 +58,11 @@ button::-moz-focus-inner {
 }
 
 .slider_buttons > button:hover {
-  color: #003339;
+  color: #4df0b4;
 }
 
 .is-active {
-  color: #003339;
+  color: #4df0b4;
 }
 
 .body {

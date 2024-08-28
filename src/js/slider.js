@@ -73,9 +73,11 @@
                this.changeSlide(i);
                this.handleClassSetActive(i);
                this.setSliderImage(this.data[this.currentSlide].bcgUrl);
+               this.initOverlayGroup(i);
            });
 
            this.handleClassSetActive(i);
+           this.initOverlayGroup(i);
         }
     }
 
@@ -85,6 +87,24 @@
         });
 
         this.main.append(`<div class="${this.selector}_buttons">${buttons.join('')}</div>`);
+    }
+
+    clearOverlayGroups() {
+        $(".slide").remove();
+    }
+
+    initOverlayGroup(index) {
+        if (index === this.currentSlide) {
+            this.clearOverlayGroups();
+
+            const pickedSlide = this.data[index].overlayGroup;
+
+            const overlayData = pickedSlide ? pickedSlide : null;
+
+            if (overlayData) {
+                this.main.overlayArea(overlayData);
+            }
+        }
     }
 
     changeSlide(slideNum) {
