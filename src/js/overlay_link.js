@@ -37,6 +37,7 @@
     class OverlayLink {
         static TOP_SHIFT = 45;
         static LEFT_SHIFT = 30;
+        static PERCANTAGE_REGULATOR = 10;
 
         static totalOverlays = 0;
 
@@ -91,19 +92,30 @@
         }
 
         createOverlay(className, title, description, left, top) {
-            const pxIdentifierIndexTop = top.indexOf('p');
-            const pxIdentifierIndexLeft = left.indexOf('p');
+            const measureIdentifierIndexTop = top.includes("p") ? top.indexOf('p') : top.indexOf('%');
+            const measureIdentifierIndexLeft = left.includes('p') ? left.indexOf('p') : left.indexOf('%');
 
-            const clearTopNumber = Number(top.slice(0, pxIdentifierIndexTop));
-            const clearLeftNumber = Number(left.slice(0, pxIdentifierIndexLeft));
+            const clearTopNumber = Number(top.slice(0, measureIdentifierIndexTop));
+            const measureMentsTop = top.slice(measureIdentifierIndexTop, top.length);
 
+            const clearLeftNumber = Number(left.slice(0, measureIdentifierIndexLeft));
+            const measureMentsLeft = left.slice(measureIdentifierIndexLeft, left.length);
+
+            const topShift = measureMentsTop === "%" 
+                ? OverlayLink.TOP_SHIFT / OverlayLink.PERCANTAGE_REGULATOR 
+                : OverlayLink.TOP_SHIFT;
+
+            const leftShift = measureMentsLeft === "%" 
+                ? OverlayLink.LEFT_SHIFT / OverlayLink.PERCANTAGE_REGULATOR
+                : OverlayLink.LEFT_SHIFT;
+            
             return $('<div>', {
                 class: className,
                 hidden: true,
                 css: {
                     position: 'absolute',
-                    left: `${clearLeftNumber + OverlayLink.LEFT_SHIFT}px`,
-                    top: `${clearTopNumber + OverlayLink.TOP_SHIFT}px`
+                    left: `${clearLeftNumber + leftShift}${measureMentsLeft}`,
+                    top: `${clearTopNumber + topShift}${measureMentsTop}`
                 }
             }).append(
                 `${title}`,
